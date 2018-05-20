@@ -8,12 +8,15 @@ public class Transaction {
     private int numberOfShares;
     //removing individual 'buyPrice' and 'sellPrice' variables and replacing them with one transPrice.
     //doesn't make sense to have buy and sell price for every transaction. and we already have transType enum
-    private double transactionPrice;
+    private double transactionPricePerShare;
     private String symbol;
-    private double priceTarget;
+    private double priceTargetPerShare;
     private double commission;
     private TransactionType transactionType;
     private String comments;
+    //Transaction total would have to be a calculated field
+    private double transactionTotal;
+
     /*
         What would be the ideal datatype for this?
         -TransactionType Object?
@@ -28,7 +31,7 @@ public class Transaction {
         this.transactionID = transID;
         this.transactionType = transType;
         this.numberOfShares = numOfShares;
-        this.transactionPrice = transPrice;
+        this.transactionPricePerShare = transPrice;
         this.symbol = symbol;
         this.commission = commission;
         this.comments = comments;
@@ -47,11 +50,11 @@ public class Transaction {
     }
 
     public double getTransactionPrice() {
-        return transactionPrice;
+        return transactionPricePerShare;
     }
 
     public void setTransactionPrice(double transactionPrice) {
-        this.transactionPrice = transactionPrice;
+        this.transactionPricePerShare = transactionPrice;
     }
 
     public String getSymbol() {
@@ -65,11 +68,11 @@ public class Transaction {
 //    }
 
     public double getPriceTarget() {
-        return priceTarget;
+        return priceTargetPerShare;
     }
 
     public void setPriceTarget(double priceTarget) {
-        this.priceTarget = priceTarget;
+        this.priceTargetPerShare = priceTarget;
     }
 
     public double getCommission() {
