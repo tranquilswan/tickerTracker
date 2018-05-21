@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 import static Model.TransactionType.BUY;
 
 public class Transaction {
@@ -13,7 +15,7 @@ public class Transaction {
     private double priceTargetPerShare;
     private double commission;
     private TransactionType transactionType;
-    private String comments;
+    public String comments;
     //Transaction total would have to be a calculated field
     private double transactionTotal;
 
@@ -36,6 +38,18 @@ public class Transaction {
         this.commission = commission;
         this.comments = comments;
     }
+
+    public Transaction(int transID, TransactionType transType, int numOfShares, double transPrice, String symbol, double commission, String comments, double priceTarget){
+        this.transactionID = transID;
+        this.transactionType = transType;
+        this.numberOfShares = numOfShares;
+        this.transactionPricePerShare = transPrice;
+        this.symbol = symbol;
+        this.commission = commission;
+        this.comments = comments;
+        this.priceTargetPerShare = priceTarget;
+    }
+
 
     public int getTransactionID(){
         return transactionID;

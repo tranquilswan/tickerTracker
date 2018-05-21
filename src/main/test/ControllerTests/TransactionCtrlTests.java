@@ -33,7 +33,6 @@ public class TransactionCtrlTests {
     @Test
     public void makeNewTransaction() throws Exception{
 
-        passedTransaction.put("id", "6");
         passedTransaction.put("type", "BUY");
         passedTransaction.put("numOfShares", "300");
         passedTransaction.put("pricePerShare", "37.23");
@@ -45,11 +44,26 @@ public class TransactionCtrlTests {
         assertEquals("XIV", newTrans.getSymbol());
     }
 
-//    @Test
-//    public void updateTransaction() throws Exception{
-//        passedTransaction.put("id", "5");
-//        passedTransaction.put("priceTarget", "37.98");
-//        returnedTransaction = restCtrl.updateTransaction(passedTransaction);
-//        assertEquals("37.98",returnedTransaction.getPriceTarget());
-//    }
+    @Test
+    public void searchTransaction() throws Exception{
+        passedTransaction.put("textToSearch", "INTC");
+        ArrayList<Transaction> foundTrans = restCtrl.searchTransaction(passedTransaction);
+        assertEquals(1, foundTrans.size());
+    }
+
+    @Test
+    public void updateTransaction() throws Exception{
+//        passedTransaction.put("id", "4");
+        passedTransaction.put("priceTarget", "37.98");
+        passedTransaction.put("ticker", "ACB");
+        passedTransaction.put("comments", "updated comments");
+        ArrayList<Transaction> listOfMatchingTransaction =
+                restCtrl.updateTransaction(passedTransaction);
+        for(Transaction trans : listOfMatchingTransaction){
+            assertEquals("37.98", Double.toString(trans.getPriceTarget()));
+            assertEquals("updated comments", trans.getComments());
+        }
+//        assertEquals("37.98", Double.toString(returnedTransaction.getPriceTarget()));
+//        assertEquals("updated comments", returnedTransaction.getComments());
+    }
 }

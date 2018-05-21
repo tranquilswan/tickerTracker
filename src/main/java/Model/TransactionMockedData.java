@@ -35,11 +35,7 @@ public class TransactionMockedData {
     }
 
     public Transaction fetchTransactionById(int id){
-//        transData.forEach(trans->{
-//            if(trans.getTransactionID() == id){
-//                return trans;
-//            }
-//        });
+
         for(Transaction trans : transData){
             if(trans.getTransactionID() == id){
                 return trans;
@@ -48,20 +44,81 @@ public class TransactionMockedData {
         return null;
     }
 
-    public Transaction recordNewTransaction(Transaction newTrans){
-        transData.add(newTrans);
-        return newTrans;
+    public Transaction recordNewTransaction(Map<String, String> newTrans){
+        //include logic to make sure that the user can't add the same id multiple time
+        //ID should be auto-incrementing, not userProvided
+
+        int transID = transData.size() + 1;
+
+        TransactionType transType;
+        if(newTrans.get("type").toUpperCase().equals("BUY")){
+            transType = TransactionType.BUY;
+        }else if(newTrans.get("type").toUpperCase().equals("SELL")){
+            transType = TransactionType.SELL;
+        }else{
+            transType = null;
+        }
+
+        int transNumOfShares = Integer.parseInt(newTrans.get("numOfShares"));
+
+        double transPricePerShare = Double.parseDouble(newTrans.get("pricePerShare"));
+
+        String transTickerSymbol = newTrans.get("ticker").toUpperCase();
+
+        double transCommission = Double.parseDouble(newTrans.get("commission"));
+
+        String transComments = newTrans.get("comments");
+
+        if(newTrans.containsKey("priceTarget")){
+            double transPriceTarget = Double.parseDouble(newTrans.get("priceTarget"));
+            transData.add(new Transaction(transID,transType,transNumOfShares,
+                    transPricePerShare,transTickerSymbol,transCommission,transComments,transPriceTarget));
+        }else{
+            transData.add(new Transaction(transID,transType,transNumOfShares,
+                    transPricePerShare,transTickerSymbol,transCommission,transComments));
+        }
+
+        //if the size of the list is 5, the largest index is 4.
+        //kinda shitty, but...
+        return transData.get(transData.size()-1);
     }
 
-//    public Transaction updateTransaction(Map<String,String> updateTrans){
-//        //the transaction has to have the ID supplied. and then just the price target
-//        //should also be able to update comments. I suppose comments should be in some sort of
-//        //array list, to retain a comment history
-//        int id = Integer.parseInt(updateTrans.get("id"));
-//        double priceTarget = Double.parseDouble(updateTrans.get("priceTarget"));
-//        Transaction updatedTrans = this.fetchTransactionById(id);
-//        updatedTrans.setPriceTarget(priceTarget);
-//        return updatedTrans;
-//    }
+    public ArrayList<Transaction> searchTransaction(String searchTerm){
+        ArrayList<Transaction> matchedTransaction = new ArrayList<>();
+        for (Transaction trans : transData){
+            if(trans.getSymbol().contains(searchTerm) ||
+                    trans.getComments().contains(searchTerm)){
+                matchedTransaction.add(trans);
+            }
+        }
+        return matchedTransaction;
+    }
+
+    public ArrayList<Transaction> updateTransaction(Map<String,String> newTransParams){
+        //the transaction has to have the ID supplied. and then just the price target
+        //should also be able to update comments.
+        //I suppose comments should be in some sort of arrayList, to retain a comment history
+        String comments = null;
+        String ticker = null;
+        double priceTarget;
+
+        ticker = newTransParams.get("ticker");
+
+        ArrayList<Transaction> listOfUpdatedTrans = this.searchTransaction(ticker);
+
+        for(Transaction trans : listOfUpdatedTrans){
+            if(newTransParams.containsKey("priceTarget")){
+                priceTarget = Double.parseDouble(newTransParams.get("priceTarget"));
+                trans.setPriceTarget(priceTarget);
+            }
+
+            if(newTransParams.containsKey("comments")){
+                comments = newTransParams.get("comments");
+                trans.setComments(comments);
+            }
+        }
+
+        return listOfUpdatedTrans;
+    }
 
 }
