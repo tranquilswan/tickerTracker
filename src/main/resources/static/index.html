@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+    <div id="transEntryForm">
+        <form>
+            <table>
+                <tr>
+                    <td>Ticker</td>
+                    <td><input type="text" id="ticker" v-model="trans.ticker"></td>
+                </tr>
+                <tr>
+                    <td>Transaction type</td>
+                    <td>
+                        <input type="radio" name="transactionType" value="BUY" id="buyTrans" v-model="trans.type">
+                        <label for="buyTrans">BUY</label>
+                        <input type="radio" name="transactionType" value="SELL" id="sellTrans" v-model="trans.type">
+                        <label for="sellTrans">SELL</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Transaction Price</td>
+                    <td><input type="number" id="transactionPrice" v-model="trans.transactionPrice"></td>
+                </tr>
+                <tr>
+                    <td>Number of Shares</td>
+                    <td><input type="number" id="numOfShares" v-model="trans.numOfShares"></td>
+                </tr>
+                <tr>
+                    <td>Commission</td>
+                    <td><input type="number" id="commission" v-model="trans.commission"></td>
+                </tr>
+                <tr>
+                    <td>Comments</td>
+                    <td><input type="text" id="comments" v-model="trans.comments"></td>
+                </tr>
+                <tr>
+                    <td><pre> {{ $data.trans | json}} </pre></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" id="recordTrans" v-on:click="submitTransaction">
+                            Record Transaction</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <!--Table to display transactions-->
+    <div id="displayForm">
+        <button type="button" id="viewAllTrans" v-on:click="retrieveTransaction">
+            Show transactions
+        </button>
+        <table>
+            <tr v-for="transaction in $data.transactions">
+                <td>{{ transaction.ticker }}</td>
+                <td>{{ transaction.position }}</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript" src="../axios.min.js"></script>
+    <script type="text/javascript" src="../app.js"></script>
+
+</body>
+</html>
