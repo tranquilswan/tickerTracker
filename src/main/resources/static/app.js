@@ -4,23 +4,26 @@ var formFunction = new Vue({
     el: "#transEntryForm",
     data: {
         trans : {
-            ticker  :   "CAT",
-            type    :   "BUY",
-            transactionPrice    :   "0.00",
-            numOfShares :   "000",
-            commission  :   "4.95",
-            comments    :   "Test"
+            ticker              :   "CAT",
+            type                :   "BUY",
+            pricePerShare       :   "0.00",
+            numOfShares         :   "000",
+            commission          :   "4.95",
+            comments            :   "Test"
         }
     },
     methods: {
         submitTransaction : function(){
-            console.log(this.$data.trans);
-            axios.post(url,this.trans).then(
-                function(response){
-                  console.log(response)
-                }
-            )
-//      and this function should call the retrieveFunction in displayForm VUE.
+            console.log(this.trans);
+            axios.post(url,this.trans)
+            .then((response) =>{
+                console.log("Data Posted");
+                displayForm.retrieveTransaction();
+                this.trans = {};
+            })
+            .catch(e => {
+                console.log("there was an error" + e);
+            })
         }
     }
 });
@@ -36,9 +39,12 @@ var displayForm = new Vue({
             axios.get(url).then((response) => {
                 console.log(response.data);
                 this.transactions = response.data;
-                console.log("done...?");
+                console.log("get complete");
             })
             console.log("trans: " + this.$data.transactions)
         }
+    },
+    beforeMount(){
+        this.retrieveTransaction();
     }
 });

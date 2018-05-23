@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td>Transaction Price</td>
-                    <td><input type="number" id="transactionPrice" v-model="trans.transactionPrice"></td>
+                    <td><input type="number" id="transactionPrice" v-model="trans.pricePerShare"></td>
                 </tr>
                 <tr>
                     <td>Number of Shares</td>
@@ -55,10 +55,18 @@
         <button type="button" id="viewAllTrans" v-on:click="retrieveTransaction">
             Show transactions
         </button>
-        <table>
+        <table border="1">
+            <tr>
+                <th>
+                    Ticker
+                </th>
+                <th>
+                    Position
+                </th>
+            </tr>
             <tr v-for="transaction in $data.transactions">
-                <td>{{ transaction.ticker }}</td>
-                <td>{{ transaction.position }}</td>
+                <td>${{ transaction.symbol }}</td>
+                <td>{{ transaction.numberOfShares }}</td>
             </tr>
         </table>
     </div>
